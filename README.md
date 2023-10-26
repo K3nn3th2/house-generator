@@ -16,7 +16,8 @@ In between the cycles, all of the houses are assigned new random dimensional att
 Developed using Glew 2.2.0, GLFW 3.3.8
 
 ## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+![Houses rising](https://i.ibb.co/KVHg6tv/2023-10-26-185826-1920x1080-scrot.png)
+![Houses fully displayed](https://i.ibb.co/hdMbcZ5/2023-10-26-185828-1920x1080-scrot.png)
 
 ## Installation
 Download the source file and the Makefile and place them in a directory.
