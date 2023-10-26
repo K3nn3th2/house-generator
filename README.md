@@ -20,8 +20,9 @@ Developed using Glew 2.2.0, GLFW 3.3.8
 ![Houses fully displayed](https://i.ibb.co/hdMbcZ5/2023-10-26-185828-1920x1080-scrot.png)
 
 ## Installation
-Download the source file and the Makefile and place them in a directory.
-`cd` to the directory in a terminal and run `make`
+- Download the source file and the Makefile and place them inside the same directory.
+
+- `cd` into the directory in a terminal and run `make`
 
 ## Usage
 simply run the compiled program.
