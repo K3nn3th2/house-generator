@@ -13,7 +13,10 @@ The animation cycle does the following:
 
 In between the cycles, all of the houses are assigned new random dimensional attribute values which are displayed in the next cycle.
 
-Developed using Glew 2.2.0, GLFW 3.3.8
+Developed using 
+- G++ 13.2.1
+- Glew 2.2.0,
+- GLFW 3.3.8
 
 ## Visuals
 ![Houses rising](https://i.ibb.co/KVHg6tv/2023-10-26-185826-1920x1080-scrot.png)
