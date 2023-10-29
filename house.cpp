@@ -175,23 +175,13 @@ class House{
 void render(std::vector<House*> houses) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // Set up projection matrix
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(-10.0, 10.0, -10.0, 10.0, -10.0, 100.0);
-
-    // Set up modelview matrix
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(10.0, 10.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-
     for (House* house : houses){
         house->draw();
     }
-        
 }
 
 int main() {
+
     if (!glfwInit()) {
         std::cout << "Failed to initialize GLFW" << std::endl;
         return -1;
@@ -211,6 +201,15 @@ int main() {
         return -1;
     }
     glEnable(GL_DEPTH_TEST);
+    // Set up projection matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(-10.0, 10.0, -10.0, 10.0, -10.0, 100.0);
+
+    // Set up modelview matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(10.0, 10.0, 10.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
     std::vector<House*> houses;
     int amount_houses = (int)random_val(12.0, 35.0);
