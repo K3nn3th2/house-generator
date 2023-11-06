@@ -20,8 +20,10 @@ Developed using
 - OpenGL 3.3
 
 ## Visuals
-![Houses rising](https://i.ibb.co/KVHg6tv/2023-10-26-185826-1920x1080-scrot.png)
-![Houses fully displayed](https://i.ibb.co/hdMbcZ5/2023-10-26-185828-1920x1080-scrot.png)
+![Houses rising](https://i.ibb.co/JtPTZm4/2023-11-06-162948-1920x1080-scrot.png)
+![Houses fully displayed](https://i.ibb.co/HtvDhZs/2023-11-06-162949-1920x1080-scrot.png)
+https://ibb.co/Pj8ykFn
+https://ibb.co/N9h6TRP
 
 ## Installation
 - Download the files into a directory.
