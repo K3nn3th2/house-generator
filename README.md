@@ -18,6 +18,7 @@ Developed using
 - Glew 2.2.0,
 - GLFW 3.3.8
 - OpenGL 3.3
+- glm 0.9.9.8
 
 ## Visuals
 ![Houses rising](https://i.ibb.co/JtPTZm4/2023-11-06-162948-1920x1080-scrot.png)
