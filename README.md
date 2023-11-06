@@ -17,13 +17,14 @@ Developed using
 - G++ 13.2.1
 - Glew 2.2.0,
 - GLFW 3.3.8
+- OpenGL 3.3
 
 ## Visuals
 ![Houses rising](https://i.ibb.co/KVHg6tv/2023-10-26-185826-1920x1080-scrot.png)
 ![Houses fully displayed](https://i.ibb.co/hdMbcZ5/2023-10-26-185828-1920x1080-scrot.png)
 
 ## Installation
-- Download the source file and the Makefile and place them inside the same directory.
+- Download the files into a directory.
 
 - `cd` into the directory in a terminal and run `make`
 
