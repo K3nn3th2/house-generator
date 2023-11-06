@@ -31,6 +31,7 @@ Developed using
 
 ## Usage
 simply run the compiled program.
+WASD keys can be used for movement.
 
 ## Authors and acknowledgment
 Kenneth Allan
