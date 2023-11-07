@@ -3,8 +3,11 @@
 ## Description
 
 
-This Program displays a random number of houses in OpenGL.
+This Program displays a random number of houses in OpenGL. 
 These houses appear to "grow" out of the ground and disappear again, repeatedly.
+Some of them are arranged similiar to a village road in real life, some are randomly placed in the scene.
+The program will deliver different graphics every time it is run.
+
 The animation cycle does the following:
 
 1. takes one second to let all of the houses appear completely (the highest one will take one second to be fully displayed),
