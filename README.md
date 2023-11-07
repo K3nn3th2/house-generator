@@ -21,9 +21,8 @@ Developed using
 - glm 0.9.9.8
 
 ## Visuals
-![Houses rising](https://i.ibb.co/JtPTZm4/2023-11-06-162948-1920x1080-scrot.png)
-![Houses fully displayed](https://i.ibb.co/HtvDhZs/2023-11-06-162949-1920x1080-scrot.png)
-
+![Houses rising](https://i.ibb.co/PjW1dTp/2023-11-07-084501-1920x1080-scrot.png)
+![Houses fully displayed](https://i.ibb.co/Kbwn2d4/2023-11-07-084502-1920x1080-scrot.png)
 
 ## Installation
 - Download the files into a directory.
@@ -33,6 +32,8 @@ Developed using
 ## Usage
 simply run the compiled program.
 WASD keys can be used for movement.
+
+Esc quits the program.
 
 ## Authors and acknowledgment
 Kenneth Allan
