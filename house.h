@@ -1,7 +1,10 @@
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "random_funcs.h"
+
+/*
+ * This file describes the class used to represent a parametric house.
+ */
 
 const float MAX_POS_X = 25.0;
 const float MAX_POS_Z = 25.0;

@@ -21,7 +21,7 @@
  *
  * The tallest house will take 1 second each to appear and to disappear. Smaller buildings take less time.
  *
- * */
+ */
 
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
@@ -33,6 +33,8 @@ float house_highest = 0.0;
 
 // camera
 Camera camera(glm::vec3(25.0f, 10.0f, 25.0f));
+
+// projection matrix for perspective
 glm::mat4 mat_projection = glm::perspective(glm::radians(80.0f), (float)WIDTH / (float)HEIGHT, 1.0f, 150.0f);
 
 // timing
@@ -40,7 +42,7 @@ float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 float startFrame = 0.0f;
 float currentFrame = 0.0;
-float duration = 0.0;
+float dur= 0.0;
 float ratio = 0.0;
 
 
@@ -60,7 +62,8 @@ void processInput(GLFWwindow *window)
         camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 
-double get_clip_height(){
+// calculates the clipping plane height according to the current time and highest building
+double get_clip_height(float duration){
      double height_clip = house_highest;
      if (duration <= 1.0){ // increase clipping plane height.
          ratio = duration;
@@ -80,14 +83,9 @@ double get_clip_height(){
 
 }
 
-int main() {
-    // Initialize GLFW and GLEW
-    glfwInit();
-    // Create a window
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Parametric House Renderer", nullptr, nullptr);
-    glfwMakeContextCurrent(window);
-    glewInit();
+std::vector<House*> generate_houses(){
 
+   // fixed positions to make it look like a road in a village
     std::vector<std::vector<float>> housePositions = {
       { 30.0, 0.0, 7.0 },
       { 27.0, 0.0, 7.5 },
@@ -110,19 +108,34 @@ int main() {
       { -2.9, 0.0, -0.2 },
     };
 
-    // Initialize data
     std::vector<House*> houses;
     int amount_houses = random_int(MIN_RANDOM_HOUSES, MAX_RANDOM_HOUSES);
+
+    // add randomly place houses
     for (int i = 0; i < amount_houses; i++){
         House* random_house = new House();
         houses.push_back(random_house);
         if (random_house->height_roof > house_highest)
             house_highest = random_house->height_roof;
     }
+    // add houses for the positions for our village road
     for (std::vector<float> pos : housePositions){
         House* random_house = new House(pos[0], pos[1], pos[2]);
         houses.push_back(random_house);
     }
+    return houses;
+}
+
+int main() {
+    // Initialize GLFW and GLEW
+    glfwInit();
+    // Create a window
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Parametric House Renderer", nullptr, nullptr);
+    glfwMakeContextCurrent(window);
+    glewInit();
+
+    // generate houses with random data
+    std::vector<House*> houses = generate_houses();
 
     // Initialize shaders
     Shader shader("vertexShader.vert", "fragmentShader.frag", "geometryShader.geom");
@@ -140,13 +153,13 @@ int main() {
         // Time handling
         currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
-        duration = currentFrame - startFrame;
+        dur = currentFrame - startFrame;
         lastFrame = currentFrame;
 
-        height_clip = get_clip_height();
+        height_clip = get_clip_height(dur);
 
         // reset house parameters and time when the 5 sec cycle is over
-        if (duration > 5.0){
+        if (dur> 5.0){
             house_highest = 0.0;
             for (House* house : houses){
                 house->set_random_dimensions();
@@ -166,9 +179,9 @@ int main() {
            shader.setFloat("u_length", house->length);
            shader.setFloat("u_height_wall", house->height_wall);
            shader.setFloat("u_height_roof", house->height_roof);
-           shader.setVec4("u_location", house->pos_x, house->pos_y, house->pos_z, 1.0);
            shader.setVec3("u_colour_roof", house->colour_roof_r, house->colour_roof_g, house->colour_roof_b);
            shader.setVec3("u_colour_wall", house->colour_wall_r, house->colour_wall_g, house->colour_wall_b);
+           shader.setVec4("u_location", house->pos_x, house->pos_y, house->pos_z, 1.0);
            shader.setMat4("u_mvp", mat_projection * mat_view * house->mat_model);
            shader.setMat4("u_rotation", house->mat_rotation);
            glDrawArrays(GL_POINTS, 0, 10);
@@ -180,6 +193,7 @@ int main() {
     // Clean up
     for (House* house : houses)
       delete house;
+
     glfwDestroyWindow(window);
     glfwTerminate();
 
