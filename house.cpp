@@ -63,8 +63,8 @@ void processInput(GLFWwindow *window)
 }
 
 // calculates the clipping plane height according to the current time and highest building
-double get_clip_height(float duration){
-     double height_clip = house_highest;
+float get_clip_height(float duration){
+     float height_clip = house_highest;
      if (duration <= 1.0){ // increase clipping plane height.
          ratio = duration;
          height_clip = ratio * house_highest;
@@ -76,7 +76,7 @@ double get_clip_height(float duration){
 
      }else if(duration >= 4.0){ // lower the clipping plane.
          ratio = (duration - 4.0);
-         double dist = house_highest - ratio * house_highest;
+         float dist = house_highest - ratio * house_highest;
          height_clip = dist;
      }
      return height_clip;
@@ -137,15 +137,16 @@ int main() {
     // generate houses with random data
     std::vector<House*> houses = generate_houses();
 
-    // Initialize shaders
+    // Initialize shader
     Shader shader("vertexShader.vert", "fragmentShader.frag", "geometryShader.geom");
     shader.use();
 
     glEnable(GL_CLIP_PLANE0);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GLU_CULLING);
 
     startFrame = static_cast<float>(glfwGetTime());
-    double height_clip;
+    float height_clip;
 
     while (!glfwWindowShouldClose(window)) {
 
