@@ -29,22 +29,7 @@ const int HEIGHT = 1080;
 const int MIN_RANDOM_HOUSES = 3;
 const int MAX_RANDOM_HOUSES = 7;
 
-// dimensional constraints for the houses
-/*
-const float MAX_POS_X = 25.0;
-const float MAX_POS_Z = 25.0;
-
-const float MIN_HOUSE_WIDTH = 1.5;
-const float MIN_HOUSE_LENGTH = 1.5;
-const float MIN_HOUSE_HEIGHT_WALL = 1.5;
-
-const float MAX_HOUSE_WIDTH = 3.5;
-const float MAX_HOUSE_LENGTH = 5.5;
-const float MAX_HOUSE_HEIGHT_ROOF = 4.5;
-const float MAX_HOUSE_HEIGHT_WALL = 3.0;
-*/
 float house_highest = 0.0;
-
 
 // camera
 Camera camera(glm::vec3(25.0f, 10.0f, 25.0f));
