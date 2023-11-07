@@ -126,6 +126,26 @@ std::vector<House*> generate_houses(){
     return houses;
 }
 
+void render(Shader &shader, std::vector<House*> &houses, float height_clip){
+
+   glm::mat4 mat_view = camera.GetViewMatrix();;
+   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+   shader.setFloat("u_height_clip", height_clip);
+   for(House* house : houses){
+      shader.setFloat("u_width", house->width);
+      shader.setFloat("u_length", house->length);
+      shader.setFloat("u_height_wall", house->height_wall);
+      shader.setFloat("u_height_roof", house->height_roof);
+      shader.setVec3("u_colour_roof", house->colour_roof_r, house->colour_roof_g, house->colour_roof_b);
+      shader.setVec3("u_colour_wall", house->colour_wall_r, house->colour_wall_g, house->colour_wall_b);
+      shader.setVec4("u_location", house->pos_x, house->pos_y, house->pos_z, 1.0);
+      shader.setMat4("u_mvp", mat_projection * mat_view * house->mat_model);
+      shader.setMat4("u_rotation", house->mat_rotation);
+      glDrawArrays(GL_POINTS, 0, 10);
+   }
+}
+
 int main() {
     // Initialize GLFW and GLEW
     glfwInit();
@@ -169,24 +189,7 @@ int main() {
             }
             startFrame = static_cast<float>(glfwGetTime());
         }
-
-
-        glm::mat4 mat_view = camera.GetViewMatrix();;
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        shader.setFloat("u_height_clip", height_clip);
-        for(House* house : houses){
-           shader.setFloat("u_width", house->width);
-           shader.setFloat("u_length", house->length);
-           shader.setFloat("u_height_wall", house->height_wall);
-           shader.setFloat("u_height_roof", house->height_roof);
-           shader.setVec3("u_colour_roof", house->colour_roof_r, house->colour_roof_g, house->colour_roof_b);
-           shader.setVec3("u_colour_wall", house->colour_wall_r, house->colour_wall_g, house->colour_wall_b);
-           shader.setVec4("u_location", house->pos_x, house->pos_y, house->pos_z, 1.0);
-           shader.setMat4("u_mvp", mat_projection * mat_view * house->mat_model);
-           shader.setMat4("u_rotation", house->mat_rotation);
-           glDrawArrays(GL_POINTS, 0, 10);
-        }
+        render(shader, houses, height_clip);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
