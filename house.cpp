@@ -1,22 +1,31 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "shader.h"
-#include "camera.h"
-#include <iostream>
 #include <random>
 #include <vector>
-//#include <chrono>
-#include <fstream>
-#include <sstream>
-#include <string>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "shader.h"
+#include "camera.h"
+
+/*
+ * This Program renders a random amount of houses with random coloured walls and roofs at random positions.
+ * They "appear" out of the ground and "disappear" again in a cycle.
+ * The cycle proceeds the following way:
+ *
+ *    1. Houses appear within 1 second
+ *    2. Houses stay put for 3 seconds
+ *    3. Houses disapper within 1 second
+ *
+ * The tallest house will take 1 second each to appear and to disappear. Smaller buildings take less time.
+ *
+ * */
 
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
 
-const int MAX_HOUSES = 50;
+const int MIN_RANDOM_HOUSES = 3;
+const int MAX_RANDOM_HOUSES = 7;
 
 // dimensional constraints for the houses
 
@@ -28,9 +37,9 @@ const float MIN_HOUSE_LENGTH = 1.5;
 const float MIN_HOUSE_HEIGHT_WALL = 1.5;
 
 const float MAX_HOUSE_WIDTH = 3.5;
-const float MAX_HOUSE_LENGTH = 7.5;
-const float MAX_HOUSE_HEIGHT_ROOF = 7.5;
-const float MAX_HOUSE_HEIGHT_WALL = 4.0;
+const float MAX_HOUSE_LENGTH = 5.5;
+const float MAX_HOUSE_HEIGHT_ROOF = 4.5;
+const float MAX_HOUSE_HEIGHT_WALL = 3.0;
 
 float house_highest = 0.0;
 
@@ -51,7 +60,13 @@ float currentFrame = 0.0;
 float duration = 0.0;
 float ratio = 0.0;
 
-float random_val(float min, float max){
+int random_int(int min, int max){
+    std::uniform_int_distribution<int> dist(min, max);
+    float generated = dist(gen);
+    return generated;
+}
+
+float random_float(float min, float max){
     std::uniform_real_distribution<float> dist(min, max);
     float generated = dist(gen);
     return generated;
@@ -61,21 +76,30 @@ class House{
     
     public:
         float height_roof, height_wall, width, length;
-        float pos_x, pos_z;
-        float pos_y = 0.0; //on ground level
+        float pos_x, pos_y, pos_z = 0.0;
         float colour_wall_r, colour_wall_g, colour_wall_b;
         float colour_roof_r, colour_roof_g, colour_roof_b;
         glm::mat4 mat_model = glm::mat4(1.0f);
+        glm::mat4 mat_rotation;
 
+        // random constructor
         House(){
-           pos_x = random_val(-MAX_POS_X, MAX_POS_X);
-           pos_z = random_val(-MAX_POS_Z, MAX_POS_Z);
+           pos_x = random_float(-MAX_POS_X, MAX_POS_X);
+           pos_z = random_float(-MAX_POS_Z, MAX_POS_Z);
            set_random_dimensions();
            set_random_colours();
         }
 
-        // specific constructor in case needed
-        House(float x, float y, float z, float w, float l, float h_r, float h_w, float col_wall_r, float col_wall_g, float col_wall_b, float col_roof_r, float col_roof_g, float col_roof_b){
+        House(float x, float y, float z){
+           pos_x = x;
+           pos_y = y;
+           pos_z = z;
+           set_random_dimensions();
+           set_random_colours();
+        }
+
+        // specific constructor
+        House(float x, float y, float z, float w, float l, float h_r, float h_w, float col_wall_r, float col_wall_g, float col_wall_b, float col_roof_r, float col_roof_g, float col_roof_b, glm::mat4 model){
            pos_x = x;
            pos_z = z;
 
@@ -90,27 +114,29 @@ class House{
            colour_roof_r = col_roof_r;
            colour_roof_g = col_roof_g;
            colour_roof_b = col_roof_b;
+           
+           mat_model = model;
         }
 
-        // This method sets the dimensional attributes to random values within the specified boundaries.
+        // This method sets the dimensional attributes of the house to random values within the specified boundaries.
         void set_random_dimensions(){
-           //mat_model = glm::rotate(glm::mat4(1.0f), (float)glm::radians(random_val(0.0, 359.0)), glm::vec3(0.0, 1.0, 0.0));
-           width = random_val(MIN_HOUSE_WIDTH, MAX_HOUSE_WIDTH);
-           length = random_val(MIN_HOUSE_LENGTH, MAX_HOUSE_LENGTH);
-           height_wall = random_val(MIN_HOUSE_HEIGHT_WALL, MAX_HOUSE_HEIGHT_WALL);
-           height_roof = random_val(height_wall, MAX_HOUSE_HEIGHT_ROOF);
+           mat_rotation = glm::rotate(glm::mat4(1.0f), glm::radians(random_float(0.0, 359.0)), glm::vec3(0.0, 1.0, 0.0));
+           width = random_float(MIN_HOUSE_WIDTH, MAX_HOUSE_WIDTH);
+           length = random_float(MIN_HOUSE_LENGTH, MAX_HOUSE_LENGTH);
+           height_wall = random_float(MIN_HOUSE_HEIGHT_WALL, MAX_HOUSE_HEIGHT_WALL);
+           height_roof = random_float(height_wall, MAX_HOUSE_HEIGHT_ROOF);
 
            if (height_roof > house_highest)
                house_highest = height_roof;
         }
 
         void set_random_colours(){
-           colour_wall_r = random_val(0.0, 1.0);
-           colour_wall_g = random_val(0.0, 1.0);
-           colour_wall_b = random_val(0.0, 1.0);
-           colour_roof_r = random_val(0.0, 1.0);
-           colour_roof_g = random_val(0.0, 1.0);
-           colour_roof_b = random_val(0.0, 1.0);
+           colour_wall_r = random_float(0.0, 1.0);
+           colour_wall_g = random_float(0.0, 1.0);
+           colour_wall_b = random_float(0.0, 1.0);
+           colour_roof_r = random_float(0.0, 1.0);
+           colour_roof_g = random_float(0.0, 1.0);
+           colour_roof_b = random_float(0.0, 1.0);
         }
 
 };
@@ -155,39 +181,67 @@ double get_clip_height(){
 int main() {
     // Initialize GLFW and GLEW
     glfwInit();
-
     // Create a window
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Parametric House Renderer", nullptr, nullptr);
     glfwMakeContextCurrent(window);
+    glewInit();
 
+    std::vector<std::vector<float>> housePositions = {
+      { 30.0, 0.0, 7.0 },
+      { 27.0, 0.0, 7.5 },
+      { 18.0, 0.0, 6.7 },
+      { 14.2, 0.0, 7.0 },
+      { 11.2, 0.0, 7.0 },
+      { 4.0, 0.0, 7.5 },
+      { 1.0, 0.0, 6.5 },
+      { -1.5, 0.0, 7.1 },
+      { -4.5, 0.0, 6.1 },
+      // opposite
+      { 28.0, 0.0, -1.0 },
+      { 25.0, 0.0, -0.1 },
+      { 18.0, 0.0, -1.7 },
+      { 14.2, 0.0, -1.0 },
+      { 11.2, 0.0, -1.3 },
+      { 7.2, 0.0, -1.0 },
+      { 3.6, 0.0, 1.2 },
+      { 0.6, 0.0, -1.2 },
+      { -2.9, 0.0, -0.2 },
+    };
+
+    // Initialize data
     std::vector<House*> houses;
-    int amount_houses = (int)random_val(12.0, (double)MAX_HOUSES);
-
+    int amount_houses = random_int(MIN_RANDOM_HOUSES, MAX_RANDOM_HOUSES);
     for (int i = 0; i < amount_houses; i++){
         House* random_house = new House();
         houses.push_back(random_house);
     }
+    for (std::vector<float> pos : housePositions){
+        House* random_house = new House(pos[0], pos[1], pos[2]);
+        houses.push_back(random_house);
+    }
 
-    glewInit();
-    glEnable(GL_DEPTH_TEST);
+    // Initialize shaders
     Shader shader("vertexShader.vert", "fragmentShader.frag", "geometryShader.geom");
     shader.use();
+
     glEnable(GL_CLIP_PLANE0);
+    glEnable(GL_DEPTH_TEST);
 
-    // Use the shader program
-    float startFrame = static_cast<float>(glfwGetTime());
-
+    startFrame = static_cast<float>(glfwGetTime());
     double height_clip;
 
     while (!glfwWindowShouldClose(window)) {
 
         processInput(window);
+        // Time handling
         currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         duration = currentFrame - startFrame;
         lastFrame = currentFrame;
 
         height_clip = get_clip_height();
+
+        // reset house parameters and time when the 5 sec cycle is over
         if (duration > 5.0){
             house_highest = 0.0;
             for (House* house : houses){
@@ -210,6 +264,7 @@ int main() {
            shader.setVec3("u_colour_roof", house->colour_roof_r, house->colour_roof_g, house->colour_roof_b);
            shader.setVec3("u_colour_wall", house->colour_wall_r, house->colour_wall_g, house->colour_wall_b);
            shader.setMat4("u_mvp", mat_projection * mat_view * house->mat_model);
+           shader.setMat4("u_rotation", house->mat_rotation);
            glDrawArrays(GL_POINTS, 0, 10);
         }
         glfwSwapBuffers(window);

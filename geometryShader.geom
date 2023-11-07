@@ -6,6 +6,7 @@ layout(triangle_strip, max_vertices = 50) out;
 out vec3 fColour;
 
 uniform mat4 u_mvp;
+uniform mat4 u_rotation;
 
 uniform vec4 u_location;
 
@@ -21,8 +22,13 @@ uniform vec3 u_colour_wall;
 
 
 void handleVertex(vec4 pos){
-   gl_Position = u_mvp * pos;
-   gl_ClipDistance[0] = dot(pos, vec4(0.0, -1.0, 0.0, u_height_clip));
+   // rotate vertex around house center
+   vec4 pos_rotated = u_rotation * (pos - u_location);
+   vec4 pos_final = pos_rotated + u_location;
+   
+   // apply mvp matrix
+   gl_Position = u_mvp * pos_final;
+   gl_ClipDistance[0] = dot(pos_final, vec4(0.0, -1.0, 0.0, u_height_clip));
    EmitVertex();
 
 }
