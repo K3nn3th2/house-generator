@@ -272,6 +272,7 @@ int main() {
     }
 
     // Clean up
+    delete houses;
     glfwDestroyWindow(window);
     glfwTerminate();
 
