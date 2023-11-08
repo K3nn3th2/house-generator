@@ -18,6 +18,23 @@ const float MAX_HOUSE_LENGTH = 5.5;
 const float MAX_HOUSE_HEIGHT_ROOF = 4.5;
 const float MAX_HOUSE_HEIGHT_WALL = 3.0;
 
+/*
+ * The class representing a house.
+ * Params:
+ *    width: width of house
+ *    length: length of house
+ *    height_wall: height of house walls
+ *    height_roof: height of house roof
+ *    colour_wall_r, colour_wall_g, colour_wall_b: rgb colour values for the walls
+ *    colour_roof_r, colour_roof_g, colour_roof_b: rgb colour values for the roof
+ *    mat_model: model matrix of house
+ *    mat_rotation: rotationt matrix to be applied to the house
+ *
+ * The default constructor returns a house with random location as well as random colour and size parameters.
+ * The remaining constructors allow a more specific instantiation of the house object.
+ *
+ */
+
 class House{
     
     public:
@@ -35,7 +52,7 @@ class House{
            set_random_dimensions();
            set_random_colours();
         }
-
+        // location specific random attribute constructor
         House(float x, float y, float z){
            pos_x = x;
            pos_y = y;
@@ -45,7 +62,7 @@ class House{
         }
 
         // specific constructor
-        House(float x, float y, float z, float w, float l, float h_r, float h_w, float col_wall_r, float col_wall_g, float col_wall_b, float col_roof_r, float col_roof_g, float col_roof_b, glm::mat4 model){
+        House(float x, float y, float z, float w, float l, float h_r, float h_w, float col_wall_r, float col_wall_g, float col_wall_b, float col_roof_r, float col_roof_g, float col_roof_b, glm::mat4 model, glm::mat4 rotation){
            pos_x = x;
            pos_z = z;
 
@@ -62,6 +79,7 @@ class House{
            colour_roof_b = col_roof_b;
            
            mat_model = model;
+           mat_rotation = rotation;
         }
 
         // This method sets the dimensional attributes of the house to random values within the specified boundaries.
@@ -71,11 +89,9 @@ class House{
            length = random_float(MIN_HOUSE_LENGTH, MAX_HOUSE_LENGTH);
            height_wall = random_float(MIN_HOUSE_HEIGHT_WALL, MAX_HOUSE_HEIGHT_WALL);
            height_roof = random_float(height_wall, MAX_HOUSE_HEIGHT_ROOF);
-
-           //if (height_roof > house_highest)
-            //   house_highest = height_roof;
         }
 
+        // assigns a random colour to the walls and the roof
         void set_random_colours(){
            colour_wall_r = random_float(0.0, 1.0);
            colour_wall_g = random_float(0.0, 1.0);

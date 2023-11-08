@@ -25,7 +25,22 @@ const float SENSITIVITY =  0.1f;
 const float ZOOM        =  45.0f;
 
 
-// An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
+/* An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
+ * 
+ * Attributes:
+ *      position: position vector of the camera
+ *      Front: Looking direction of camera
+ *      Up: normal vector of camera
+ *      Right: right vector of camera
+ *      WorldUp: up vector of world space
+ *
+ *      Yaw: camera yaw
+ *      Pitch: camera pitch
+ *      MovementSpeed: Speed of movement of camera
+ *      MouseSensitivity: Sensivity of mouse input
+ *      Zoom: camera zoom
+ *
+ */
 class Camera
 {
 public:
