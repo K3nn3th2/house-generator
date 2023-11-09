@@ -1,10 +1,10 @@
 CC=g++
 
-CFLAGS=-c -Wall -std=c++11
+CFLAGS=-c -Wall -std=c++17
 
 LDFLAGS=-lglfw -lrt -lm -ldl -lX11 -lpthread -lxcb -lXau -lXdmcp -lGLEW -lEGL -lGL -lGLU -lOpenGL 
 
-SOURCES=camera.cpp house.cpp main.cpp
+SOURCES=camera.cpp shader.cpp house.cpp main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=parametric_house
 
