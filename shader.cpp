@@ -1,5 +1,7 @@
 #include "shader.h"
 
+Shader::Shader(){}
+
 Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath)
 {
     // 1. retrieve the vertex/fragment source code from filePath
@@ -81,7 +83,6 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geo
         glDeleteShader(geometry);
 
 }
-
 
 // utility function for checking shader compilation/linking errors.
 void Shader::checkCompileErrors(GLuint shader, std::string type){

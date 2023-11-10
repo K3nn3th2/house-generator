@@ -1,4 +1,8 @@
+#ifndef HOUSE_H
+#define HOUSE_H
+
 #include <glm/glm.hpp>
+
 #include <glm/gtc/matrix_transform.hpp>
 #include "random.hpp"
 
@@ -71,3 +75,4 @@ class House{
         void randomize_rotation();
 
 };
+#endif
