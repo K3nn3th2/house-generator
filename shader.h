@@ -9,6 +9,10 @@
 #include <sstream>
 #include <iostream>
 
+/*
+ * This class manages the OpenGL shader program instantiation and handling.
+ * It provides methods to set uniforms and to inform about shader source code compile errors.
+ */
 class Shader
 {
 public:
